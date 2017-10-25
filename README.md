@@ -1,6 +1,8 @@
 # Overview
 
-This is a Java client that can track and report details of a demo/tutorial that has been deployed to Cloud Foundry.
+Metrics Collector Service collects statistics for deployment of a github sample code on Cloud Foundry, Kubernetes, Data Science Experience, OpenWhisk etc.
+
+This is Java client for Metrics Collector Service. It is a module JAR that can track and report details of a demo/tutorial.
 
 # Usage
 
@@ -28,23 +30,33 @@ To take advantage of the tracking functionality in a web application:
 1. Obtain the tracker client library
   * From the [Maven Central Repository](http://search.maven.org/#search|ga|1|g%3A%22com.ibm.bluemix.deploymenttracker%22%20AND%20a%3A%22cf-java-app-tracker-client%22) (groupId **com.ibm.bluemix.deploymenttracker**, artifactId **cf-java-app-tracker-client**) *or*
  * Download the source code from https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java and build the JAR using the default target/goal of the provided ant or pom script.
-2. Copy client library `cf-java-app-tracker-client-{version}.jar` to your web application's `WebContent/WEB-INF/lib` directory.
+2. Copy client library `java-metrics-tracker-client-{version}-jar-with-dependencies.jar` to your web application's `scr/main/webapp/WEB-INF/lib` directory.
 
 ## Provide information about your application
 
-Create a `package.json` file in the web applications' `WebContent/META-INF` directory.
+Create a `repository.yaml` file in the web applications' `scr/main/webapp/META-INF` directory.
 Replace the application specific information in the example below with your application's information.
+The repository.yaml need to be written in Yaml format. Also, please put all your keys in lower case.
 
-  ````
-   {
-     "name": "talent-manager",
-     "version": "1.0.0",
-     "repository": {
-        "type": "git",
-        "url": "https://github.com/IBM-Bluemix/talent-manager.git"
-     }
-   }
-  ````
+```
+id: spring-boot-microservices-on-kubernetes
+runtimes: 
+  - Kubernetes Cluster
+  - OpenWhisk
+services: 
+  - Compose for MySQL
+event_id: web
+event_organizer: dev-journeys
+language: java
+```
+
+Required field:
+1. id: Put your journey name/Github URL of your journey.
+2. runtimes: Put down all your platform runtime environments in a list.
+3. services: Put down all the bluemix services that are used in your journey in a list.
+4. event_id: Put down where you will distribute your journey. Default is **web**. 
+5. event_organizer: Put down your event organizer if you have one.
+6. language: If your journey is not in **java**, please put down the journey's main language in lower case.
 
 ## Add a Privacy Notice
 
@@ -59,21 +71,17 @@ service on each deployment by default:
 * Application Name (`application_name`)
 * Application GUID (`application_id`)
 * Application instance index (`instance_index`)
-* Space ID (`space_id`)
+* Space ID (`space_id`) or OS username
 * Application Version (`application_version`)
 * Application URIs (`application_uris`)
-* Labels of bound services
+* Cloud Foundry API (`cf_api`)
+* Labels and names of bound services
 * Number of instances for each bound service and associated plan information
+* Metadata in the repository.yaml file
 
-This data is collected from the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix 
-and other Cloud Foundry platforms. This data is used by IBM to track metrics around 
+This data is collected from the `package.json` and `repository.yaml` file in the sample application and the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around 
 deployments of sample applications to IBM Bluemix to measure the usefulness of our examples,
 so that we can continuously improve the content we offer to you. 
-
-The following additional information will be sent in addition if the following are defined
-as described in the usage notes below:
-* Source code download/issue URL (`url`)
-* Source code version (`version`)
 
 # Disabling  Deployment Tracking
 
