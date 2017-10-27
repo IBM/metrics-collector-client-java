@@ -2,16 +2,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ibm.bluemix.deploymenttracker</groupId>
-  <artifactId>cf-java-app-tracker-client</artifactId>
+  <groupId>com.ibm.bluemix.metricstracker</groupId>
+  <artifactId>java-metrics-tracker-client</artifactId>
   <version>0.3.0</version>
   <packaging>jar</packaging>
 
-  <name>Cloud Foundry Java application tracker client</name>
+  <name>Java application tracker client</name>
 
-  <description>This utility sends a tracking request to a deployment tracker service (see https://github.com/IBM-Bluemix/cf-deployment-tracker-service) each time a Java sample application is deployed.</description>
+  <description>This utility sends a tracking request to a deployment tracker service (see https://github.com/IBM/metrics-collector-service) each time a Java sample application is deployed.</description>
 
-  <url>https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java</url>
+  <url>https://github.com/IBM/metrics-collector-client-java</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +29,11 @@
     <releases>
         <enabled>true</enabled>
     </releases>
+  </repository>
+  <repository>
+    <id>Sonatype-public</id>
+    <name>SnakeYAML repository</name>
+    <url>http://oss.sonatype.org/content/groups/public/</url>
   </repository>
  </repositories>
 
@@ -56,6 +61,11 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.19</version>
+    </dependency>
   </dependencies>
   
   <build>
@@ -115,14 +125,35 @@
           </execution>
         </executions>
       </plugin>
+      <!-- build package with dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+            <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+
+        </configuration>
+        <executions>
+            <execution>
+                <id>assemble-all</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>single</goal>
+                </goals>
+            </execution>
+        </executions>
+        </plugin>
     </plugins>
     <defaultGoal>package</defaultGoal>
   </build>
 
   <scm>
-    <connection>scm:git:https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java.git</connection>
-    <developerConnection>scm:git:https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java.git</developerConnection>
-    <url>scm:git:https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java.git</url>
+    <connection>scm:git:https://github.com/IBM/metrics-collector-client-java.git</connection>
+    <developerConnection>scm:git:https://github.com/IBM/metrics-collector-client-java.git</developerConnection>
+    <url>scm:git:https://github.com/IBM/metrics-collector-client-java.git</url>
   </scm>
   <licenses>
     <license>
@@ -135,7 +166,7 @@
       <name>Patrick Titzler</name>
       <email>ptitzler@us.ibm.com</email>
       <organization>IBM</organization>
-      <organizationUrl>https://github.com/IBM-Bluemix</organizationUrl>
+      <organizationUrl>https://github.com/IBM</organizationUrl>
     </developer>
   </developers>
 

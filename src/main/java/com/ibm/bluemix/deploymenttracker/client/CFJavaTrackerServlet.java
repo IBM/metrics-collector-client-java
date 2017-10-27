@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,17 +29,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Map;
+import org.yaml.snakeyaml.Yaml;
+
 import com.ibm.json.java.JSON;
 import com.ibm.json.java.JSONObject;
+import com.ibm.json.java.JSONArray;
 
 /**
  * Simple wrapper class for the Cloud Foundry Java application tracker client. 
  * This servlet is launched automatically by the container.
  * Basic information about the tracker and its tracking payload can be retrieved 
- * by sending a GET request to /comibmbluemix/CFAppTracker
+ * by sending a GET request to /comibmbluemix/AppTracker
  *
  */
-@WebServlet(urlPatterns={"/comibmbluemix/CFAppTracker"},loadOnStartup=128)
+@WebServlet(urlPatterns={"/comibmbluemix/AppTracker"},loadOnStartup=128)
 public class CFJavaTrackerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -5251459961638725024L;
@@ -48,28 +54,43 @@ public class CFJavaTrackerServlet extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		 
-		JSONObject packagejson = null;
-		InputStream packagejsoninwar = null;
+		JSONObject configFile = null;
+		InputStream configFileinwar = null;
 		
 		try {
 			 // retrieve tracking data that might be optionally packaged with the sample application
 			 // getResourceAsStream returns null if resource is not found 
-			 packagejsoninwar = getServletContext().getResourceAsStream("/META-INF/package.json");
-			 if(packagejsoninwar != null)  
-			     packagejson = (JSONObject) JSON.parse(packagejsoninwar, true);
-			 else if(System.getenv("PACKAGE_JSON") != null)
-				 packagejson = (JSONObject) JSON.parse(System.getenv("PACKAGE_JSON"), true); 
+			 configFileinwar = getServletContext().getResourceAsStream("/META-INF/repository.yaml");
+			 if(configFileinwar != null){
+		 	    Yaml yaml= new Yaml();
+				Map<String,Object> map = (Map<String, Object>) yaml.load(configFileinwar);
+			 	configFile = new JSONObject();
+			 	Iterator it = map.entrySet().iterator();
+				while (it.hasNext()) {
+				    Map.Entry pairs = (Map.Entry)it.next();
+				    if(pairs.getValue() instanceof String){
+   					 configFile.put(pairs.getKey(), pairs.getValue());
+					}else{
+						JSONArray temp = new JSONArray();
+						ArrayList<String> array = (ArrayList <String>) pairs.getValue();
+						for(int i = 0; i < array.size(); i++){
+							temp.add(array.get(i));
+						}
+				    	configFile.put(pairs.getKey(), temp);
+					}
+				}
+			 }
 		}
 		catch(Exception ex) {
 			// ignore errors 
-			packagejson = null;
+			configFile = null;
 		}
 		finally {
 			try {
 			    // cleanup                                                                                                                                                                                 
-				if(packagejsoninwar != null)
-					packagejsoninwar.close();
-				packagejsoninwar = null;
+				if(configFileinwar != null)
+					configFileinwar.close();
+				configFileinwar = null;
 			}
 			catch(Exception ex) {
 				// ignore
@@ -77,10 +98,10 @@ public class CFJavaTrackerServlet extends HttpServlet {
 		}
 		
 		 try {
-			new CFJavaTrackerClient().track(packagejson);		        
+			new CFJavaTrackerClient().track(configFile);		        
 		 }
 		 catch(Exception ex) {
-			System.err.println("[CF-java-tracker-client] An error occurred while trying to track application: " + ex.getClass().getName() + ":" + ex.getMessage());
+			System.err.println("[Metrics-Collector-Client-Java] An error occurred while trying to track application: " + ex.getClass().getName() + ":" + ex.getMessage());
 			ex.printStackTrace(System.err);
 		 }
 		 
@@ -88,7 +109,7 @@ public class CFJavaTrackerServlet extends HttpServlet {
 	
 	
 	/**
-     * Displays the tracker client status page at /comibmbluemix/CFAppTracker 
+     * Displays the tracker client status page at /comibmbluemix/AppTracker 
      * @param req  the request to be processed 
      * @param resp the request response
      * @throws ServletException if the request for the GET could not be handled
@@ -153,7 +174,7 @@ public class CFJavaTrackerServlet extends HttpServlet {
 			out.close();
 		}
 		catch(Exception ex) {
-			System.err.println("[CF-java-tracker-client] An error occurred in doGet: " + ex.getClass().getName() + ":" + ex.getMessage());
+			System.err.println("[Metrics-Collector-Client-Java] An error occurred in doGet: " + ex.getClass().getName() + ":" + ex.getMessage());
 			ex.printStackTrace(System.err);
 		}
 				
