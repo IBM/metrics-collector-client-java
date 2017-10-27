@@ -10,26 +10,10 @@ This is Java client for Metrics Collector Service. It is a module JAR that can t
 
 To take advantage of the tracking functionality in a web application:
 
-### Add these Maven dependencies
-
-  ```xml
-  <dependency>
-    <groupId>com.ibm.websphere.appserver.api</groupId>
-    <artifactId>com.ibm.websphere.appserver.api.json</artifactId>
-    <version>1.0.11</version>
-  </dependency>
-  <dependency>
-    <groupId>com.ibm.bluemix.deploymenttracker</groupId>
-    <artifactId>cf-java-app-tracker-client</artifactId>
-    <version>0.3.0</version>
-  </dependency>
-  ```
-
-### Or Download/Build it yourself
+## Download/Build it yourself
 
 1. Obtain the tracker client library
-  * From the [Maven Central Repository](http://search.maven.org/#search|ga|1|g%3A%22com.ibm.bluemix.deploymenttracker%22%20AND%20a%3A%22cf-java-app-tracker-client%22) (groupId **com.ibm.bluemix.deploymenttracker**, artifactId **cf-java-app-tracker-client**) *or*
- * Download the source code from https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java and build the JAR using the default target/goal of the provided ant or pom script.
+ * Download the source code from https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java and build the JAR with `mvn package` using the default target/goal of the provided ant or pom script.
 2. Copy client library `java-metrics-tracker-client-{version}-jar-with-dependencies.jar` to your web application's `scr/main/webapp/WEB-INF/lib` directory.
 
 ## Provide information about your application
