@@ -13,7 +13,7 @@ To take advantage of the tracking functionality in a web application:
 ## Download/Build it yourself
 
 1. Obtain the tracker client library
- * Download the source code from https://github.com/IBM-Bluemix/cf-deployment-tracker-client-java and build the JAR with `mvn package` using the default target/goal of the provided ant or pom script.
+ * Download the source code from https://github.com/IBM/metrics-collector-client-java and build the JAR with `mvn package` using the default target/goal of the provided ant or pom script.
 2. Copy client library `java-metrics-tracker-client-{version}-jar-with-dependencies.jar` to your web application's `scr/main/webapp/WEB-INF/lib` directory.
 
 ## Provide information about your application
