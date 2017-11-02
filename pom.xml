@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ibm.bluemix.metricstracker</groupId>
+  <groupId>com.ibm.journeycode.metricstracker</groupId>
   <artifactId>java-metrics-tracker-client</artifactId>
   <version>0.3.0</version>
   <packaging>jar</packaging>
@@ -165,6 +165,12 @@
     <developer>
       <name>Patrick Titzler</name>
       <email>ptitzler@us.ibm.com</email>
+      <organization>IBM</organization>
+      <organizationUrl>https://github.com/IBM</organizationUrl>
+    </developer>
+    <developer>
+      <name>Tommy Li</name>
+      <email>tommy.chaoping.li@us.ibm.com</email>
       <organization>IBM</organization>
       <organizationUrl>https://github.com/IBM</organizationUrl>
     </developer>

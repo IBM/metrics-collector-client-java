@@ -10,9 +10,30 @@ This is Java client for Metrics Collector Service. It is a module JAR that can t
 
 To take advantage of the tracking functionality in a web application:
 
-## Download/Build it yourself
+### Add these Maven dependencies
+
+  ```xml
+    <dependency>
+      <groupId>com.ibm.websphere.appserver.api</groupId>
+      <artifactId>com.ibm.websphere.appserver.api.json</artifactId>
+      <version>1.0.11</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.journeycode.metricstracker</groupId>
+      <artifactId>java-metrics-tracker-client</artifactId>
+      <version>0.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.19</version>
+    </dependency>
+  ```
+
+### Or Download/Build it yourself
 
 1. Obtain the tracker client library
+ * From the [Maven Central Repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.ibm.journeycode.metricstracker%22) (groupId **com.ibm.journeycode.metricstracker**, artifactId **java-metrics-tracker-client**) *or*
  * Download the source code from https://github.com/IBM/metrics-collector-client-java and build the JAR with `mvn package` using the default target/goal of the provided ant or pom script.
 2. Copy client library `java-metrics-tracker-client-{version}-jar-with-dependencies.jar` to your web application's `scr/main/webapp/WEB-INF/lib` directory.
 
@@ -35,7 +56,8 @@ language: java
 ```
 
 Required field:
-1. id: Put your journey name/Github URL of your journey.
+1. id: Put your journey name/Github URL of your journey/pattern.
+   - Note: Please put down the Github URL if your journey/pattern is not in IBM organization.
 2. runtimes: Put down all your platform runtime environments in a list.
 3. services: Put down all the bluemix services that are used in your journey in a list.
 4. event_id: Put down where you will distribute your journey. Default is **web**. 
@@ -49,8 +71,8 @@ Add the following to your application README.md:
 ```
 # Privacy Notice
 Sample web applications that include this tracking library may be configured to track
-deployments to [IBM Bluemix](https://www.bluemix.net/) and other Cloud Foundry platforms.
-The following information is sent to a [Deployment Tracker](https://github.com/IBM-Bluemix/cf-deployment-tracker-service)
+deployments to [IBM Cloud](https://www.bluemix.net/) and other Cloud Foundry platforms.
+The following information is sent to a [Deployment Tracker](https://github.com/IBM/metrics-collector-service)
 service on each deployment by default:
 * Application Name (`application_name`)
 * Application GUID (`application_id`)
@@ -63,13 +85,13 @@ service on each deployment by default:
 * Number of instances for each bound service and associated plan information
 * Metadata in the repository.yaml file
 
-This data is collected from the `package.json` and `repository.yaml` file in the sample application and the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Bluemix and other Cloud Foundry platforms. This data is used by IBM to track metrics around 
-deployments of sample applications to IBM Bluemix to measure the usefulness of our examples,
+This data is collected from the `repository.yaml` file in the sample application and the `VCAP_APPLICATION` and `VCAP_SERVICES` environment variables in IBM Cloud and other Cloud Foundry platforms. This data is used by IBM to track metrics around 
+deployments of sample applications to IBM Cloud to measure the usefulness of our examples,
 so that we can continuously improve the content we offer to you. 
 
-# Disabling  Deployment Tracking
+# Disabling Deployment Tracking
 
-To disable deployment tracking remove `cf-java-app-tracker-client-{version}.jar`
+To disable deployment tracking remove `java-metrics-tracker-client-{version}.jar`
 from the web application's `WebContent/WEB-INF/lib` directory or from the `pom.xml`
 and redeploy the application.
 ```
@@ -84,10 +106,10 @@ replacing `<APPLICATION_URL>` with the web application URL.
 
 # Example app
 
-[This project](https://github.com/IBM-Bluemix/local-liberty-tutorial) uses the deployment tracker library.
-You can look at [its pom.xml](https://github.com/IBM-Bluemix/local-liberty-tutorial/blob/master/pom.xml),
-[its package.json](https://github.com/IBM-Bluemix/local-liberty-tutorial/blob/master/src/main/webapp/META-INF/package.json)
-and [its privacy notice](https://github.com/IBM-Bluemix/local-liberty-tutorial#privacy-notice).
+[This project](https://github.com/tomcli/local-liberty-tutorial) uses the deployment tracker library.
+You can look at [its pom.xml](https://github.com/tomcli/local-liberty-tutorial/blob/master/pom.xml),
+[its repository.yaml](https://github.com/tomcli/local-liberty-tutorial/blob/master/src/main/webapp/META-INF/repository.yaml)
+and [its privacy notice](https://github.com/tomcli/local-liberty-tutorial#privacy-notice).
 
 # License
 
