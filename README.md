@@ -44,20 +44,20 @@ Replace the application specific information in the example below with your appl
 The repository.yaml need to be written in Yaml format. Also, please put all your keys in lower case.
 
 ```
-id: spring-boot-microservices-on-kubernetes
-runtimes: 
-  - Kubernetes Cluster
-  - OpenWhisk
-services: 
-  - Compose for MySQL
+id: https://github.com/IBM-Bluemix/local-liberty-tutorial
 event_id: web
 event_organizer: dev-journeys
+runtimes:
+  - Cloud Foundry
+services:
+  - Cloudant NoSQL DB
+  - Personality Insights
 language: java
 ```
 
 Required field:
 1. id: Put your journey name/Github URL of your journey/pattern.
-   - Note: Please put down the Github URL if your journey/pattern is not in IBM organization.
+   - Note: Please put down the whole Github URL if your journey/pattern is not in IBM organization.
 2. runtimes: Put down all your platform runtime environments in a list.
 3. services: Put down all the bluemix services that are used in your journey in a list.
 4. event_id: Put down where you will distribute your journey. Default is **web**. 
